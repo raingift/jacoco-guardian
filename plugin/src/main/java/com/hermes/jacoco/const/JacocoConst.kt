@@ -20,5 +20,8 @@ val fileFilter = listOf(
     "**/ComposableSingletons*",
     "**/*\$InjectAdapter.class",
     "**/*\$ModuleAdapter.class",
-    "**/*\$ViewInjector*.class"
+    "**/*\$ViewInjector*.class",
+    "**/*Test.*",
+    "**/*Test*.*",
+    "**/test/**"
 )

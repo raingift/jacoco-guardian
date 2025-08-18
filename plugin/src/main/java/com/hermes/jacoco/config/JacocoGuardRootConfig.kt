@@ -2,10 +2,10 @@ package com.hermes.jacoco.config
 
 import com.android.build.gradle.BaseExtension
 import com.hermes.jacoco.const.RELATIVE_LOCAL_DIR_PATH
-import com.hermes.jacoco.const.fileFilter
 import com.hermes.jacoco.guardian.JacocoExtension
 import com.hermes.jacoco.guardian.enableAutoCoverage
 import com.hermes.jacoco.guardian.enableFullCoverage
+import com.hermes.jacoco.guardian.getFileFilter
 import com.hermes.jacoco.guardian.getJacocoVersion
 import com.hermes.jacoco.tasks.JacocoInitTask
 import org.gradle.api.Project
@@ -40,11 +40,12 @@ fun Project.addRootJacocoConfigTask(jacocoExt: JacocoExtension) {
     }
 
     val enableAutoCoverage = enableAutoCoverage(jacocoExt)
+    val fileFilter = getFileFilter(jacocoExt)
     println("[jacocoRootConfigTask] enableAutoCoverage: $enableAutoCoverage")
 
     configJacocoAnt(jacocoExt)
 
-    jacocoRootReportTaskProvider(enableAutoCoverage)
+    jacocoRootReportTaskProvider(enableAutoCoverage, fileFilter)
 }
 
 /**
@@ -71,7 +72,10 @@ private fun Project.configJacocoAnt(jacocoExt: JacocoExtension) {
  *
  * root project
  */
-private fun Project.jacocoRootReportTaskProvider(enableAutoCoverage: Boolean) {
+private fun Project.jacocoRootReportTaskProvider(
+    enableAutoCoverage: Boolean,
+    fileFilter: List<String>,
+) {
     tasks.register("jacocoRootReport", JacocoReport::class.java) {
         it.group = "Reporting"
         it.description = "Generate Jacoco Root coverage reports"

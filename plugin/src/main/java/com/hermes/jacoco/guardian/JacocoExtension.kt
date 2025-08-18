@@ -1,5 +1,6 @@
 package com.hermes.jacoco.guardian
 
+import com.hermes.jacoco.const.fileFilter
 import org.gradle.api.Project
 
 open class JacocoExtension {
@@ -47,6 +48,10 @@ open class JacocoExtension {
      */
     var buildFlavorName: List<String>? = emptyList()
 
+    /**
+     * 自定义文件过滤器
+     */
+    var fileFilter: List<String>? = emptyList()
 }
 
 fun Project.jacocoConfig(block: JacocoExtension.() -> Unit) {
@@ -77,5 +82,11 @@ fun enableFullCoverage(jacocoExt: JacocoExtension) =
  * enable debug jacoco or not
  */
 fun enableDebug(jacocoExt: JacocoExtension) = jacocoExt.enableDebug.isTrue()
+
+/**
+ * external injection file filtering
+ */
+fun getFileFilter(jacocoExt: JacocoExtension?) =
+    jacocoExt?.fileFilter?.takeUnless { it.isEmpty() } ?: fileFilter
 
 private fun Boolean?.isTrue() = this == true

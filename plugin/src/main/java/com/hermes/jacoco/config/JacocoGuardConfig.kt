@@ -1,8 +1,8 @@
 package com.hermes.jacoco.config
 
 import com.android.build.gradle.BaseExtension
-import com.hermes.jacoco.const.fileFilter
 import com.hermes.jacoco.guardian.JacocoExtension
+import com.hermes.jacoco.guardian.getFileFilter
 import com.hermes.jacoco.guardian.getJacocoVersion
 import org.gradle.api.Project
 import org.gradle.api.file.ConfigurableFileCollection
@@ -97,6 +97,7 @@ private fun Project.jacocoReportTaskProvider() {
  * configuration sources and classes files path
  */
 private fun Project.configurableFilesPair(): Pair<Set<File>?, ConfigurableFileCollection> {
+    val jacocoExt = rootProject.extensions.findByType(JacocoExtension::class.java)
     val extension = extensions.findByType(BaseExtension::class.java)
     val sources = extension?.sourceSets?.findByName("main")?.java?.srcDirs
 
@@ -106,13 +107,13 @@ private fun Project.configurableFilesPair(): Pair<Set<File>?, ConfigurableFileCo
         fileTree(
             mapOf(
                 "dir" to javaClassesDir,
-                "exclude" to fileFilter
+                "exclude" to getFileFilter(jacocoExt)
             )
         ),
         fileTree(
             mapOf(
                 "dir" to kotlinClassesDir,
-                "exclude" to fileFilter
+                "exclude" to getFileFilter(jacocoExt)
             )
         )
     )
