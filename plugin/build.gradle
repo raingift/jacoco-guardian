@@ -1,0 +1,51 @@
+plugins {
+    id("java-library")
+    id("java-gradle-plugin")
+    id("kotlin")
+    id("jacoco")
+    id("maven-publish")
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation "com.android.tools.build:gradle:8.2.2"
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.25"
+}
+
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+gradlePlugin {
+    plugins {
+        jacocoGuardPlugin {
+            id = "com.hermes.code.jacoco"
+            implementationClass = "com.hermes.jacoco.guardian.JacocoGuardPlugin"
+        }
+    }
+}
+
+group = GROUP
+version = VERSION
+
+publishing {
+    repositories {
+        mavenLocal()
+    }
+
+    publications {
+        pluginMaven(MavenPublication) {
+            groupId = project.group
+            artifactId = "jacoco-guard-plugin"
+            version = project.version
+        }
+
+        pluginMarker(MavenPublication) {
+            groupId = project.group
+            artifactId = "jacoco-guard-plugin"
+            version = project.version
+        }
+    }
+}
