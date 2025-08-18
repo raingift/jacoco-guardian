@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "jacocoguardian"
+rootProject.name = "jacoco-guardian"
 include ':plugin'
 include ':library'
