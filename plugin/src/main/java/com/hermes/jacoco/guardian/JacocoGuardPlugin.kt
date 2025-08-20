@@ -15,12 +15,11 @@ import org.gradle.api.Project
 class JacocoGuardPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        println("JacocoPlugin Start Loaded!")
         val extension = target.extensions.create("jacocoConfig", JacocoExtension::class.java)
+        println("JacocoPlugin Start Loaded!")
 
         target.allprojects.forEach { project ->
             project.afterEvaluate {
-                println("enableJacoco ${extension.enableJacoco}")
                 if (extension.enableJacoco == false) {
                     return@afterEvaluate
                 }
@@ -63,7 +62,6 @@ class JacocoGuardPlugin : Plugin<Project> {
                 project.addTestJacocoClassPaths(jacocoExt)
             }
         }
-        println("isAndroidModule: $isAndroidModule")
     }
 
     private fun includeProjects(jacocoExt: JacocoExtension, path: String): Boolean =

@@ -33,4 +33,26 @@ jacoco的插件能力分 本地测试能力以及远端设备能力
 
 ### 2. jacoco-guard-lib
 jacoco针对 远端采集能力的适配
+```kotlin
 
+val jacocoHelper = JacocoHelper(
+    localDirPath = "xxx", // 本地路径
+    deviceDirPath = "yyy" // 设备路径
+).apply {
+    setLogger(object : ILogger {
+        override fun d(tag: String, msg: String) {
+            Log.d(tag, msg)
+        }
+
+        override fun e(tag: String, msg: String) {
+            Log.e(tag, msg)
+        }
+    })
+}
+
+
+jacocoHelper.generateEcFile(true) {
+    println(it.data.msg)
+}
+
+```
