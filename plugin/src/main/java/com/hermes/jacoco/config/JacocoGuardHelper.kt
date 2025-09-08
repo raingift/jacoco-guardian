@@ -52,7 +52,11 @@ fun Project.addJacocoResourcePackage(jacocoExt: JacocoExtension) {
         it.group = "Reporting"
         it.description = "jacoco resource package"
         val timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmm"))
-        it.archiveFileName.set("project_bundle_${timestamp}.zip")
+        val archiveFileName =
+            jacocoExt.jacocoResPackageName?.takeIf { it.isNotEmpty() }?.removeSuffix(".zip")
+                ?: "project_bundle_${timestamp}"
+
+        it.archiveFileName.set(archiveFileName)
         it.destinationDirectory.set(rootProject.layout.buildDirectory.dir("outputs/tmp"))
 
         subprojects.mapNotNull { project ->
@@ -63,12 +67,12 @@ fun Project.addJacocoResourcePackage(jacocoExt: JacocoExtension) {
                     "tmp/kotlin-classes/**",
                     "classes/**"
                 )
-                copy.into("$name/build/")
+                copy.into("${project.name}/build/")
             }
 
             it.from(project.projectDir) { copy ->
                 copy.include("src/main/java/**")
-                copy.into("$name/")
+                copy.into("${project.name}/")
             }
         }
 

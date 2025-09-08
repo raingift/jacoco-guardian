@@ -52,6 +52,11 @@ open class JacocoExtension {
      * 自定义文件过滤器
      */
     var fileFilter: List<String>? = emptyList()
+
+    /**
+     * jacoco res资源打包命名
+     */
+    var jacocoResPackageName: String? = ""
 }
 
 fun Project.jacocoConfig(block: JacocoExtension.() -> Unit) {
